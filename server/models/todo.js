@@ -40,10 +40,9 @@ module.exports = (sequelize, DataTypes) => {
           args : true,
           mgs : 'due_date cannot be empty'
         },
-        isValid(value){
-          if (value < new Date()){
-            throw new Error(`date cannot be ealier than today's date`)
-          }
+        isAfter : {
+          args : new Date().toString(),
+          msg : `please in put date after ${new Date()}`
         },
         isDate : {
           args : true,

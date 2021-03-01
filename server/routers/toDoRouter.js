@@ -1,11 +1,12 @@
 const express = require('express')
-const ToDoController = require('../controllers/toDoController')
 const router = express.Router()
+const ToDoController = require('../controllers/toDoController')
 
-router.get('/')
-router.post('/')
 
-router.get('/:id')
+router.post('/', ToDoController.add)
+router.get('/', ToDoController.read)
+
+router.get('/:id', ToDoController.findById)
 router.put('/:id')
 router.patch('/:id')
 router.delete('/:id')
