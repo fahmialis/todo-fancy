@@ -5,11 +5,14 @@ const ToDoController = require('../controllers/toDoController')
 
 router.post('/', ToDoController.add)
 router.get('/', ToDoController.read)
+router.get('/', ToDoController.readCompleted)
 
 router.get('/:id', ToDoController.findById)
-router.put('/:id')
-router.patch('/:id')
-router.delete('/:id')
+
+router.put('/:id', ToDoController.editTask)
+router.patch('/:id',ToDoController.editStatus)
+
+router.delete('/:id', ToDoController.delete)
 
 
 

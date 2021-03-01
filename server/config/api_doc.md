@@ -31,23 +31,24 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
 &nbsp;
 
 ## RESTful endpoints
-### GET /assets
+
+### GET /todos
 
 > Get all assets
 
 ```
 {
   "Content-type": "application/json"
-}
-```
-
-_Request Body_
-```
-{
-
 }
 ```
 
@@ -74,7 +75,7 @@ _Response (200)_
 ```
 
 ---
-### GET /assets/:id
+### GET /todos/:id
 
 > Get single asset as defined by the id provided
 
@@ -105,7 +106,7 @@ _Response (200)_
 ```
 
 ---
-### POST /assets
+### POST /todos
 
 > Create new asset
 
@@ -159,16 +160,10 @@ _Response (201 - Created)_
 ```
 
 ---
-### PUT /assets/:id
+### PUT /todos/:id
 
 > Update an asset defined by the id provided
 
-_Request Header_
-```
-{
-  "access_token": "<your access token>"
-}
-```
 
 _Request Body_
 ```
@@ -192,37 +187,97 @@ _Response (200 - OK)_
 }
 ```
 
+### PATCH /todos/:id
+
+> Update an asset defined by the id provided
+
+
+_Request Body_
+```
+{
+  "status" : "finished",
+}
+```
+
+_Response (200 - OK)_
+```
+{
+  "id": <given id by system>,
+  "name": "change task",
+  "description": "changing current task into a new one",
+  "status" : "finished",
+  "due date": "2021-03-02",
+  "createdAt": "2020-03-20T07:15:12.149Z",
+  "updatedAt": "2020-03-20T07:15:12.149Z",
+}
+```
+
 ---
-### DELETE /assets/:id
+### DELETE /todos/:id
 
 > Delete an asset defined by the id provided
 
-_Request Header_
-```
-{
-  "access_token": "<your access token>"
-}
-```
 
 _Request Body_
 ```
 not needed
 ```
 
-_Response (200 - OK) - Alternative 1_
-```
-{
-  "id": <given id by system>,
-  "name": "<posted name>",
-  "description": "<posted description>",
-  "createdAt": "2020-03-20T07:15:12.149Z",
-  "updatedAt": "2020-03-20T07:15:12.149Z",
-}
-```
 
 _Response (200 - OK) - Alternative 2_
 ```
 {
-  "message": "asset successfully deleted"
+  "message": "task successfully deleted"
 }
+```
+
+### POST /user/register
+
+> Create new asset
+
+_Request Body_
+```
+{
+    {
+      "email" : "asdf@mail.com",
+      "password" : "asdf1234",
+    },
+}
+```
+
+_Response (201 - Created)_
+```
+[
+  {
+    "id": 1,
+    "email" : "asdf@mail.com",
+    "password" : "asdf1234",
+    "createdAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z",
+  },
+]
+```
+
+### POST /user/login
+
+> Create new asset
+
+_Request Body_
+```
+{
+    {
+      "email" : "asdf@mail.com",
+      "password" : "asdf1234",
+    },
+}
+```
+
+_Response (201 - OK)_
+```
+[
+  {
+    "id": 1,
+    "email" : "asdf@mail.com",
+  },
+]
 ```
