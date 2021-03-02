@@ -2,6 +2,10 @@ const express = require('express')
 const router = express.Router()
 const ToDoController = require('../controllers/toDoController')
 
+const{Authenticate, Authorize} = require('../middleware/auth')
+
+
+router.use(Authenticate)
 
 router.post('/', ToDoController.add)
 router.get('/', ToDoController.read)

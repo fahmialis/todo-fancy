@@ -46,13 +46,11 @@ class UserController {
             }
         })
         .catch(err =>{
-            let errorMessage
             if(err.msg){
-                errorMessage = err.msg
+                res.status(401).json({ message: err.message });
             } else {
-                errorMessage = err.errors[0].message || 'internal server error'
-            }
-            res.status(500).json({message : errorMessage})
+              res.status(500).json({message : errorMessage})  
+            }    
         })
     }
 

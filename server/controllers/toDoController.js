@@ -65,6 +65,7 @@ class ToDoController {
         .catch(err =>{
             // console.log(err);
             res.status(404).json(err)
+            next()
         })
     }
 
@@ -83,8 +84,8 @@ class ToDoController {
         }) 
         .then(data =>{
             // console.log(data);
-            if(data === 1){
-               res.status(200).json({message : `task is updated`, data}) 
+            if(data[0] === 1){
+               res.status(200).json({message : `task is updated`}) 
             } else {
                 throw {message : `data not found`}
             }        
@@ -104,8 +105,8 @@ class ToDoController {
             where : {id}
         })
         .then(data =>{
-            if(data === 1){
-                res.status(200).json({message : `task is updated`, data}) 
+            if(data[0] === 1){
+                res.status(200).json({message : `task is updated`}) 
              } else {
                 throw {message : `data not found`}
              }   
