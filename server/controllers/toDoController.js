@@ -2,7 +2,7 @@ const {ToDo} = require('../models')
 
 
 class ToDoController {
-    static add(req,res){
+    static add(req, res, next){
         // res.send('adding')
         let data = {
             title : req.body.title,
@@ -15,61 +15,68 @@ class ToDoController {
             res.status(201).json({message : 'task successfully added', data})
         })
         .catch(err =>{
-            // console.log(err);
-            const errMessage = err.errors[0].message
-            res.status(500).json({message : errMessage})
+            // console.log(err.errors.message);
+            if(err.errors){
+               let errMsg = []
+               for ( let i = 0; i < err.errors.length; i++ ){
+                // console.log(err.errors[i].message);
+                errMsg.push(err.errors[i].message)   
+            } 
+                next({
+                    code : 400,
+                    message : errMsg
+                })
+            } else {
+                next({
+                    code : 500,
+                    message : `Internal server error`
+                })
+            }
         })
     }
 
-    static read(req, res){
+    static read(req, res, next){
         // res.send('get data')
-        ToDo.findAll({where : {
-            status : 'on progress'
-        }})
+        ToDo.findAll()
         .then(data =>{
             res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
             // console.log(err);
-            res.status(500).json({message : `internal server error`})
+            next({
+                code: 500,
+                message:"Internal Server Error"
+            })
         })
-
     }
 
-    static readCompleted(req, res){
-        // res.send('get data')
-        ToDo.findAll({where : {
-            status : 'completed'
-        }})
-        .then(data =>{
-            res.status(200).json({message : `task found is`, data})
-        })
-        .catch(err =>{
-            console.log(err);
-            res.status(500).json({message : `internal server error`})
-        })
+    
 
-    }
-
-    static findById(req, res){
+    static findById(req, res, next){
         // res.send(`find id : ${+req.params.id}`)
         let id = +req.params.id
 
         ToDo.findByPk(id)
         .then(data =>{
             if(!data){
-                throw {message : `data not found`}
+                next({
+                    code : 404,
+                    message : `ToDo not found`
+                })
+            } else {
+                res.status(200).json({message : `task found is`, data})
             }
-            res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
             // console.log(err);
-            res.status(404).json(err)
-            next()
+            next({
+                code: 500,
+                message:"Internal Server Error"
+            })
         })
     }
 
-    static editTask(req, res){
+    static editTask(req, res, next){
         let id = +req.params.id
 
         let data = {
@@ -87,17 +94,23 @@ class ToDoController {
             if(data[0] === 1){
                res.status(200).json({message : `task is updated`}) 
             } else {
-                throw {message : `data not found`}
+                next({
+                    code : 404,
+                    message : `ToDo not found`
+                })
             }        
         })
         .catch(err =>{
             // console.log(err);
-            res.status(404).json(err);        
+            next({
+                code: 500,
+                message:"Internal Server Error"
+            })      
         })
     }
 
 
-    static editStatus(req, res){
+    static editStatus(req, res, next){
         let id = +req.params.id
         let status = req.body.status
 
@@ -108,38 +121,42 @@ class ToDoController {
             if(data[0] === 1){
                 res.status(200).json({message : `task is updated`}) 
              } else {
-                throw {message : `data not found`}
+                next({
+                    code : 404,
+                    message : `ToDo not found`
+                })
              }   
         })
         .catch(err =>{
-            if(err){
-                res.status(404).json(err);
-            } else {
-                res.status(500).json({message : `internal server error`})
-            }
+            next({
+                code: 500,
+                message:"Internal Server Error"
+            }) 
         })
 
     }
 
-    static delete(req, res){
+    static delete(req, res, next){
         let id = +req.params.id
 
         ToDo.destroy({where : {id}})
         .then(data =>{
             // console.log(data);
             if(!data){
-                throw {message : `data not found`}
+                next({
+                    code : 404,
+                    message : `ToDo not found`
+                })
             } else {
                 res.status(200).json({message : "Todo success to delete"})
             }
         })
         .catch(err =>{
             // console.log(err);
-            if(err){
-                res.status(404).json(err);
-            } else {
-                res.status(500).json({message : `internal server error`})
-            }
+            next({
+                code: 500,
+                message:"Internal Server Error"
+            }) 
         })
 
     }

@@ -1,4 +1,4 @@
-const {User} = require('../models')
+const {User, ToDo} = require('../models')
 const {verify} = require('../helpers/jwt')
 
 
@@ -28,11 +28,34 @@ const Authenticate = (req, res, next) =>{
 }
 
 const Authorize = (req, res, next) =>{
-    // console.log(req.currentUser);
-    console.log(`masuk authorize`);
-    next()
-
-
+    // console.log(req.currentUser, 'ini curretn user');
+    // console.log(req.params, 'ini params');
+    let Id = +req.params.id 
+    let userId = req.currentUser.id
+    // console.log(`masuk authorize`);
+    User.findByPk(userId, {
+        include : ToDo
+    })
+    .then(data =>{
+        if(data){
+            let validUser = +ToDo.UserId === +userId
+            if(validUser){
+                next()
+            } else {
+                next({
+                    code : 404,
+                    message : 'ToDo not found'
+                })
+            }
+        }
+    })
+    .catch(err =>{
+        next({
+            code: 500,
+            message:"Internal Server Error"
+        })
+    })
+    
 
 }
 

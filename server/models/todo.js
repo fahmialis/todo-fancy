@@ -10,7 +10,7 @@ module.exports = (sequelize, DataTypes) => {
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      // define association here
+      ToDo.belongsTo(models.User, {foreignKey : 'UserId'})
     }
   };
   ToDo.init({
@@ -50,7 +50,11 @@ module.exports = (sequelize, DataTypes) => {
         }
       }
     },
-    UserId : DataTypes.INTEGER,
+    UserId : {
+      type : DataTypes.INTEGER,
+      onUpdate: 'CASCADE',
+      onDelete: 'CASCADE',
+    }
   }, {
     sequelize,
     modelName: 'ToDo',
