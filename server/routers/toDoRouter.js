@@ -5,7 +5,7 @@ const ToDoController = require('../controllers/toDoController')
 
 router.post('/', ToDoController.add)
 router.get('/', ToDoController.read)
-router.get('/', ToDoController.readCompleted)
+router.get('/completed', ToDoController.readCompleted)
 
 router.get('/:id', ToDoController.findById)
 

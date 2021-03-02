@@ -34,12 +34,12 @@ class UserController {
                 // console.log(passCompared);
 
                 if(passCompared){
-                    const token = jwt.sign({
+                    const access_token = jwt.sign({
                         id : user.id,
                         email : user.email
-                    }, 'password')
+                    }, process.env.SECRET)
 
-                    res.status(200).json({token})
+                    res.status(200).json({access_token})
                 } else {
                     throw {msg : 'invalid email or password'}
                 }   

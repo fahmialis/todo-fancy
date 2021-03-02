@@ -12,10 +12,10 @@ class ToDoController {
 
         ToDo.create(data)
         .then(data =>{
-            res.status(201).json({message : 'task successfully added'})
+            res.status(201).json({message : 'task successfully added', data})
         })
         .catch(err =>{
-            console.log(err);
+            // console.log(err);
             const errMessage = err.errors[0].message
             res.status(500).json({message : errMessage})
         })
@@ -27,7 +27,7 @@ class ToDoController {
             status : 'on progress'
         }})
         .then(data =>{
-            res.status(200).json({success : true, message : `task found is`, data})
+            res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
             console.log(err);
@@ -42,7 +42,7 @@ class ToDoController {
             status : 'completed'
         }})
         .then(data =>{
-            res.status(200).json({success : true, message : `task found is`, data})
+            res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
             console.log(err);
@@ -57,11 +57,14 @@ class ToDoController {
 
         ToDo.findByPk(id)
         .then(data =>{
-            res.status(200).json({success : true, message : `task found is`, data})
+            if(!data){
+                throw {message : `data not found`}
+            }
+            res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
             // console.log(err);
-            res.status(404).json({message : `data not found`})
+            res.status(404).json(err)
         })
     }
 
@@ -71,6 +74,7 @@ class ToDoController {
         let data = {
             title : req.body.title,
             description : req.body.description,
+            status: req.body.status,
             due_date : req.body.due_date
         }
 
@@ -78,29 +82,40 @@ class ToDoController {
             where : {id}
         }) 
         .then(data =>{
-            res.status(200).json({success : true, message : `task is updated`, data}) 
+            // console.log(data);
+            if(data === 1){
+               res.status(200).json({message : `task is updated`, data}) 
+            } else {
+                throw {message : `data not found`}
+            }        
         })
         .catch(err =>{
-            console.log(err)
-            let errMessage = []
-            // for ( let i = 0; i < err.errors; i++){
-            //     console.log(err.errors[i].ValidationErrorItem.message);
-            // }
-            
+            // console.log(err);
+            res.status(404).json(err);        
         })
     }
 
 
     static editStatus(req, res){
         let id = +req.params.id
-
         let status = req.body.status
 
-        ToDo.update(status, {
+        ToDo.update({status}, {
             where : {id}
         })
         .then(data =>{
-            res.status(200).json({success : true, message : `task is updated`, data}) 
+            if(data === 1){
+                res.status(200).json({message : `task is updated`, data}) 
+             } else {
+                throw {message : `data not found`}
+             }   
+        })
+        .catch(err =>{
+            if(err){
+                res.status(404).json(err);
+            } else {
+                res.status(500).json({message : `internal server error`})
+            }
         })
 
     }
@@ -108,13 +123,22 @@ class ToDoController {
     static delete(req, res){
         let id = +req.params.id
 
-        ToDo.destroy(id)
+        ToDo.destroy({where : {id}})
         .then(data =>{
-            res.status(200).json({success : true, message : `task is deleted`})
+            // console.log(data);
+            if(!data){
+                throw {message : `data not found`}
+            } else {
+                res.status(200).json({message : "Todo success to delete"})
+            }
         })
         .catch(err =>{
-            console.log(err);
-            res.status(500).json({message : `internal server error`})
+            // console.log(err);
+            if(err){
+                res.status(404).json(err);
+            } else {
+                res.status(500).json({message : `internal server error`})
+            }
         })
 
     }
