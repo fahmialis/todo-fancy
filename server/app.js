@@ -8,7 +8,6 @@ const port = 3000
 app.use(express.urlencoded({extended : true}))
 app.use(express.json())
 
-// console.log(process.env.SECRET);
 
 app.use(router)
 

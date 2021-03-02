@@ -1,10 +1,11 @@
 const {User} = require('../models')
-const jwt = require('jsonwebtoken')
+const {verify} = require('../helpers/jwt')
+
 
 const Authenticate = (req, res, next) =>{
     // console.log(req.headers);
     try {
-       let decode = jwt.verify(req.headers.access_token,process.env.SECRET)
+       let decode = verify(req.headers.access_token)
     // console.log(decode);
         User.findOne({
             where : {id : decode.id, email : decode.email}
@@ -27,6 +28,9 @@ const Authenticate = (req, res, next) =>{
 }
 
 const Authorize = (req, res, next) =>{
+    // console.log(req.currentUser);
+    console.log(`masuk authorize`);
+    next()
 
 
 

@@ -1,6 +1,6 @@
 const {User} = require('../models')
 const {comparePassword} = require('../helpers/bycriptjs')
-const jwt = require('jsonwebtoken');
+const {sign} = require('../helpers/jwt')
 
 
 class UserController {
@@ -34,10 +34,10 @@ class UserController {
                 // console.log(passCompared);
 
                 if(passCompared){
-                    const access_token = jwt.sign({
+                    const access_token = sign({
                         id : user.id,
                         email : user.email
-                    }, process.env.SECRET)
+                    })
 
                     res.status(200).json({access_token})
                 } else {

@@ -30,7 +30,7 @@ class ToDoController {
             res.status(200).json({message : `task found is`, data})
         })
         .catch(err =>{
-            console.log(err);
+            // console.log(err);
             res.status(500).json({message : `internal server error`})
         })
 

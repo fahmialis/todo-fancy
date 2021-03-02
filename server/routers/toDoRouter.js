@@ -5,7 +5,7 @@ const ToDoController = require('../controllers/toDoController')
 const{Authenticate, Authorize} = require('../middleware/auth')
 
 
-router.use(Authenticate)
+router.use(Authenticate, Authorize)
 
 router.post('/', ToDoController.add)
 router.get('/', ToDoController.read)
