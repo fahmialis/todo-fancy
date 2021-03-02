@@ -4,7 +4,7 @@ const {sign} = require('../helpers/jwt')
 
 
 class UserController {
-    static register(req, res){
+    static register(req, res,next){
         let data = {
             email : req.body.email,
             password : req.body.password
@@ -15,14 +15,21 @@ class UserController {
             res.status(201).json({success: true, message : 'user created', user}, )
         })
         .catch(err =>{
-            console.log(err)
-            const errorMsg = err.errors[0].message
-            res.status(500).json({message : errorMsg})
+            // console.log(err)
+            let errMsg = []
+               for ( let i = 0; i < err.errors.length; i++){
+                // console.log(err.errors[i].message);
+                errMsg.push(err.errors[i].message) 
+               }
+            next({
+                code : 500,
+                message : errMsg
+            })
         })
     }
 
 
-    static login(req, res){
+    static login(req, res,next){
         // res.send('login')
         const email = req.body.email
         const password = req.body.password
@@ -41,7 +48,10 @@ class UserController {
 
                     res.status(200).json({access_token})
                 } else {
-                    throw {msg : 'invalid email or password'}
+                    next({
+                        code: 401,
+                        message : `Invalid email or password`
+                    })
                 }   
             }
         })
@@ -49,7 +59,10 @@ class UserController {
             if(err.msg){
                 res.status(401).json({ message: err.message });
             } else {
-              res.status(500).json({message : errorMessage})  
+                next({
+                    code : 500,
+                    message : `Internal Server Error`
+                })  
             }    
         })
     }

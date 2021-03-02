@@ -18,7 +18,7 @@ class ToDoController {
             // console.log(err.errors.message);
             if(err.errors){
                let errMsg = []
-               for ( let i = 0; i < err.errors.length; i++ ){
+               for ( let i = 0; i < err.errors.length; i++){
                 // console.log(err.errors[i].message);
                 errMsg.push(err.errors[i].message)   
             } 
@@ -45,7 +45,7 @@ class ToDoController {
             // console.log(err);
             next({
                 code: 500,
-                message:"Internal Server Error"
+                message: `Internal Server Error`
             })
         })
     }
@@ -71,7 +71,7 @@ class ToDoController {
             // console.log(err);
             next({
                 code: 500,
-                message:"Internal Server Error"
+                message:`Internal Server Error`
             })
         })
     }
@@ -104,7 +104,7 @@ class ToDoController {
             // console.log(err);
             next({
                 code: 500,
-                message:"Internal Server Error"
+                message:`Internal Server Error`
             })      
         })
     }
@@ -130,7 +130,7 @@ class ToDoController {
         .catch(err =>{
             next({
                 code: 500,
-                message:"Internal Server Error"
+                message:`Internal Server Error`
             }) 
         })
 
@@ -148,14 +148,14 @@ class ToDoController {
                     message : `ToDo not found`
                 })
             } else {
-                res.status(200).json({message : "Todo success to delete"})
+                res.status(200).json({message : `Todo success to delete`})
             }
         })
         .catch(err =>{
             // console.log(err);
             next({
                 code: 500,
-                message:"Internal Server Error"
+                message:`Internal Server Error`
             }) 
         })
 
