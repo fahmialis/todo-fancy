@@ -4,38 +4,160 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <link rel="stylesheet" href="./style.css">
     <title>Document</title>
 </head>
 <body>
-    <table class="table">
+    <div class="container-fluid sticky-top" id="main-navbar">
+    <nav class="navbar navbar-default sticky-top">
+        <div class="container-fluid">
+          <div class="navbar-header">
+              <h5 class="navbar-brand">ToDo Application</h5>
+          </div>
+          <ul class="d-flex flex-row" >
+            <li class="main-page p-2"><a href="#"><h5>Home</h5></a></li>
+            <li class="login-button p-2"><a href="#"><h5>Login</h5></a></li>
+            <li class="register-button p-2"><a href="#"><h5>Register</h5></a></li>
+            <li class="logout-button p-2"><a href="#"><h5>Logout</h5></a></li>
+          </ul>
+        </div>
+      </nav>
+    </div>
+    <br>
+      
+
+    <!-- LOGIN PAGE -->
+    <div class="center" id="login-page">
+    <h1>Login</h1>
+    <form id="Login-form">
+        <div class="form-group">
+          <label for="email"><h2>Email</h2></label>
+          <input type="email" class="form-control" id="login-email" aria-describedby="emailHelp" placeholder="Enter your email here ">
+          <small id="email-help" class="form-text text-muted"><h3>Please write in email form</h3></small>
+        </div>
+        <div class="form-group">
+          <label for="to-do-password"><h2>Password</h2></label>
+          <input type="password" class="form-control" id="login-password" placeholder="Input your password here">
+          <small id="password-help" class="form-text text-muted"><h3>Your password wont be shared anywhere</h3></small>
+        </div>
+        <button type="submit" class="btn btn-primary">Login</button>
+      </form>
+    </div>
+    </div>
+    <br><br>
+    <!-- LOGIN PAGE -->
+
+    <!-- REGISTER PAGE -->
+    <div class="center" id="register-page">
+    <h1>Register</h1>
+    <form id="register-form">
+        <div class="form-group">
+          <label for="email"><h2>Email</h2></label>
+          <input type="text" class="form-control" id="register-email" aria-describedby="emailHelp" placeholder="Enter your email here ">
+          <small id="email-help" class="form-text text-muted"><h3>Register your email here</h3></small>
+        </div>
+        <div class="form-group">
+          <label for="to-do-password"><h2>Password</h2></label>
+          <input type="password" class="form-control" id="register-password" placeholder="Register your password here">
+          <small id="password-help" class="form-text text-muted"><h3>Your password wont be shared anywhere</h3></small>
+        </div>
+        <button type="submit" class="btn btn-primary">Register</button>
+      </form>
+    </div>
+    <br><br>
+    <!-- REGISTER PAGE -->
+
+
+    <!-- TODOLIST -->
+    <div id="to-do-list">
+    <h1>ToDO List</h1>
+    <button type="submit" class="btn btn-primary btn-block btn-large">Add To Do</button>
+      <table class="table table-borderless table-striped">
         <thead>
           <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
+            <th scope="col">id</th>
+            <th scope="col">Title</th>
+            <th scope="col">Description</th>
+            <th scope="col">Status</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <th scope="row">1</th>
-            <td>Mark</td>
+            <td></td>
             <td>Otto</td>
             <td>@mdo</td>
+            <td>
+                <button class="btn btn-warning">Edit</button>
+                <button class="btn btn-danger">Delete</button>
+            </td>
           </tr>
           <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>@fat</td>
-          </tr>
-          <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>the Bird</td>
-            <td>@twitter</td>
           </tr>
         </tbody>
       </table>
+    </div>
+      <br><br>
+      <!-- TODOLIST -->
+
+      <!-- ADD TO DO  -->
+    <div class="center">
+      <h1>Add new ToDo</h1>
+      <form id="add-to-do">
+        <div class="form-group">
+          <label for="to-do-title"><h2>Title</h2></label>
+          <input type="text" class="form-control" id="add-task" aria-describedby="title-help" placeholder="Enter task">
+          <small id="title-help" class="form-text text-muted"><h3>e.g Cleaning your room</h3></small>
+        </div>
+        <div class="form-group">
+          <label for="to-do-description"><h2>Decription</h2></label>
+          <input type="text" class="form-control" id="add-description" placeholder="Add task detail here">
+          <small id="description-help" class="form-text text-muted"><h3>Add detail to your to do list</h3></small>
+        </div>
+        <div class="form-group">
+            <label for="to-do-due-date"><h2>Due date</h2></label>
+            <input type="date" class="form-control" id="add-due-date" placeholder="Add task detail here">
+            <small id="due-date-help" class="form-text text-muted"><h3>Add due date here so you wont laze around</h3></small>
+          </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+      </form>
+    </div>
+    <br><br>
+      <!-- ADD TO DO  -->
+
+
+      <!-- EDIT TO DO -->
+      <div class="center">
+        <h1>Edit new ToDo</h1>
+        <form id="Edit-to-do">
+          <div class="form-group">
+            <label for="to-do-title"><h2>Title</h2></label>
+            <input type="text" class="form-control" id="Edit-task" aria-describedby="title-help" placeholder="Enter task">
+            <small id="title-help" class="form-text text-muted"><h3>Change your task if you need to</h3></small>
+          </div>
+          <div class="form-group">
+            <label for="to-do-description"><h2>Decription</h2></label>
+            <input type="text" class="form-control" id="edit-description" placeholder="Edit task detail here">
+            <small id="description-help" class="form-text text-muted"><h3>Edit detail of your to do list</h3></small>
+          </div>
+          <div class="form-group">
+              <label for="to-do-due-date"><h2>Due date</h2></label>
+              <input type="date" class="form-control" id="edit-due-date" placeholder="Edit task detail here">
+              <small id="due-date-help" class="form-text text-muted"><h3>Change due date if you need to</h3></small>
+            </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+      </div>
+      <!-- EDIT TO DO -->
+
+
+<script
+src="https://code.jquery.com/jquery-3.6.0.min.js"
+integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+crossorigin="anonymous"></script>
+
+<script src="./main.js"></script>
 </body>
 </html>

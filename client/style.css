@@ -1,0 +1,14 @@
+nav ul { list-style-type: none; }
+
+.center {
+    margin: auto;
+    text-align: center;
+    width: 50%;
+    border: 3px solid lightcyan;
+    background-color: lightblue;
+    padding: 10px;
+}
+
+h1 {
+    text-align: center;  
+}
