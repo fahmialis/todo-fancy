@@ -14,7 +14,6 @@ $("document").ready(function(){
         $('#edit-to-do-page').hide()
         $('#logout-button').hide()
         $('#main-page-button').hide()
-
     })
 
     $('#login-button').on('click', function(event){
@@ -26,8 +25,11 @@ $("document").ready(function(){
         $('#edit-to-do-page').hide()
         $('#logout-button').hide()
         $('#main-page-button').hide()
+    })
 
-
+    $('#logout-button').on('click', function(event){
+        event.preventDefault()
+        logout();    
     })
 
     $('#submit-login').on('click', function(event){
@@ -40,11 +42,17 @@ $("document").ready(function(){
         event.preventDefault()
         register()
 
+    })
 
+    $('#add-to-do').on('click', function(event){
+        event.preventDefault()
+        $('#add-to-do-page').show()
+        $('#to-do-list-page').hide()       
     })
 
     $('#submit-add-to-do').on('click', function(event){
         event.preventDefault()
+        addList()
 
     })
 
@@ -68,8 +76,9 @@ function login(){
         }
     })
     .done(response =>{
-        console.log(response);
+        // console.log(response);
         localStorage.setItem('access_token', response.access_token)
+        checkLocalStorage()
     })
     .fail(err =>{
         console.log(err);
@@ -116,7 +125,13 @@ function checkLocalStorage(){
         $('#main-page-button').hide()
         $('#login-button').hide()
         $('#register-button').hide()
+
+        findAllList()
     } else {
+        $('#login-button').show()
+        $('#register-button').show()
+        $('#login-page').show()
+
         $('#register-page').hide()
         $('#to-do-list-page').hide()
         $('#add-to-do-page').hide()
@@ -124,4 +139,93 @@ function checkLocalStorage(){
         $('#logout-button').hide()
         $('#main-page-button').hide()
     }
+}
+
+function logout(){
+    localStorage.removeItem('access_token')
+    checkLocalStorage()
+}
+
+function findAllList(){
+    $('#to-do-list').empty()
+    $.ajax({
+        url : baseURL+'todos',
+        method : 'get',
+        headers : {
+            access_token : localStorage.access_token
+        }
+    })
+    .done(response =>{
+        // console.log(response);
+        for( let  i= 0; i < response.data.length; i++){
+
+            $('#to-do-list').append(
+                `
+                <tr>
+                <th scope="row">${response.data[i].id}</th>
+                <td>${response.data[i].title}</td>
+                <td>${response.data[i].description}</td>
+                <td>${response.data[i].due_date}</td>
+                <td>${response.data[i].status}</td>
+                <td>
+                    <button class="btn btn-warning" id="edit-button">Edit</button>
+                    <button class="btn btn-danger" onclick=deleteList(${response.data[i].id}) id="delete-button">Delete</button>
+                </td>
+              </tr>
+                `
+            )
+        }
+
+    })
+    .fail( err =>{
+        console.log(err);
+    })
+}
+
+function deleteList(id){
+    $.ajax({
+        url : baseURL+'todos/'+id,
+        method : 'delete',
+        headers : {
+            access_token : localStorage.access_token
+        }
+    })
+    .done(() =>{
+        findAllList()
+    })
+    .fail(err =>{
+        console.log(err);
+    })
+}
+
+function addList(){
+    const title = $('#add-task').val()
+    const description = $('#add-description').val()
+    const due_date = $('#add-due-date').val()
+
+    // console.log(title, description, due_date);
+
+    $.ajax({
+        url : baseURL+'todos',
+        method : 'post',
+        headers : {
+            access_token : localStorage.access_token
+        },
+        data : {
+            title, description, due_date
+        }
+    })
+    .done(() =>[
+        findAllList()
+    ])
+    .fail(err =>{
+        console.log(err);
+    })
+    .always(() =>{
+        $('#add-task').val('')
+        $('#add-description').val('')
+        $('#add-due-date').val('')
+        $('#to-do-list-page').show() 
+        $('#add-to-do-page').hide()
+    })
 }
