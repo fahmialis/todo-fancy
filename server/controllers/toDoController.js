@@ -7,7 +7,8 @@ class ToDoController {
         let data = {
             title : req.body.title,
             description : req.body.description,
-            due_date : req.body.due_date
+            due_date : req.body.due_date,
+            UserId : req.body.UserId
         }
 
         ToDo.create(data)

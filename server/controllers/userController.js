@@ -16,15 +16,18 @@ class UserController {
         })
         .catch(err =>{
             // console.log(err)
-            let errMsg = []
+            if(err.errors){
+               let errMsg = []
                for ( let i = 0; i < err.errors.length; i++){
                 // console.log(err.errors[i].message);
                 errMsg.push(err.errors[i].message) 
-               }
-            next({
+               } 
+            } else {
+              next({
                 code : 500,
                 message : errMsg
-            })
+            })  
+            } 
         })
     }
 

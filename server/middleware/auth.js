@@ -47,6 +47,11 @@ const Authorize = (req, res, next) =>{
                     message : 'ToDo not found'
                 })
             }
+        } else {
+            next({
+                code : 404,
+                message : 'ToDo not found'
+            }) 
         }
     })
     .catch(err =>{
