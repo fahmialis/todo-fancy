@@ -1,9 +1,7 @@
 const {ToDo} = require('../models')
 
-
 class ToDoController {
     static add(req, res, next){
-        // res.send('adding')
         let data = {
             title : req.body.title,
             description : req.body.description,
@@ -16,11 +14,9 @@ class ToDoController {
             res.status(201).json({message : 'task successfully added', data})
         })
         .catch(err =>{
-            // console.log(err.errors.message);
             if(err.errors){
                let errMsg = []
                for ( let i = 0; i < err.errors.length; i++){
-                // console.log(err.errors[i].message);
                 errMsg.push(err.errors[i].message)   
             } 
                 next({
@@ -37,11 +33,7 @@ class ToDoController {
     }
 
     static read(req, res, next){
-        // console.log(req.currentUser,' ini read');
-        // res.send('get data')
-        // console.log(req.action);
         let action = req.action
-        // console.log(action.message);
         ToDo.findAll({
             where : {
                 UserId : +req.currentUser.id
@@ -51,7 +43,6 @@ class ToDoController {
             res.status(200).json({message : `task found is`, data, action })
         })
         .catch(err =>{
-            // console.log(err);
             next({
                 code: 500,
                 message: `Internal Server Error`
@@ -62,9 +53,7 @@ class ToDoController {
     
 
     static findById(req, res, next){
-        // res.send(`find id : ${+req.params.id}`)
         let id = +req.params.id
-
         ToDo.findByPk(id)
         .then(data =>{
             if(!data){
@@ -99,7 +88,6 @@ class ToDoController {
             where : {id}
         }) 
         .then(data =>{
-            // console.log(data);
             if(data[0] === 1){
                res.status(200).json({message : `task is updated`}) 
             } else {
@@ -110,7 +98,6 @@ class ToDoController {
             }        
         })
         .catch(err =>{
-            // console.log(err);
             next({
                 code: 500,
                 message:`Internal Server Error`
@@ -150,7 +137,6 @@ class ToDoController {
 
         ToDo.destroy({where : {id}})
         .then(data =>{
-            // console.log(data);
             if(!data){
                 next({
                     code : 404,
@@ -161,7 +147,6 @@ class ToDoController {
             }
         })
         .catch(err =>{
-            // console.log(err);
             next({
                 code: 500,
                 message:`Internal Server Error`
