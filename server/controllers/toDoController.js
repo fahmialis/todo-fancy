@@ -39,13 +39,16 @@ class ToDoController {
     static read(req, res, next){
         // console.log(req.currentUser,' ini read');
         // res.send('get data')
+        // console.log(req.action);
+        let action = req.action
+        // console.log(action.message);
         ToDo.findAll({
             where : {
                 UserId : +req.currentUser.id
             }
         })
         .then(data =>{
-            res.status(200).json({message : `task found is`, data})
+            res.status(200).json({message : `task found is`, data, action })
         })
         .catch(err =>{
             // console.log(err);

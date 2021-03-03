@@ -29,16 +29,20 @@ const Authenticate = (req, res, next) =>{
 
 const Authorize = (req, res, next) =>{
     console.log(req.currentUser, 'ini curretn user');
-    console.log(req.params, 'ini params');
-    let Id = +req.params.id 
+    // console.log(req.params, 'ini params');
     let userId = req.currentUser.id
     // console.log(`masuk authorize`);
-    User.findByPk(userId, {
-        include : ToDo
+    ToDo.findOne({
+        where: {
+            id: +req.params.id
+        }
     })
     .then(data =>{
+        // console.log(data, 'data find one');
+        // res.send(data)
         if(data){
-            let validUser = +ToDo.UserId === +userId
+            let validUser = +data.UserId === +userId
+            // console.log(validUser, +data.UserId , +userId);
             if(validUser){
                 next()
             } else {
@@ -55,6 +59,7 @@ const Authorize = (req, res, next) =>{
         }
     })
     .catch(err =>{
+        console.log(err);
         next({
             code: 500,
             message:"Internal Server Error"

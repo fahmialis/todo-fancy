@@ -1,5 +1,5 @@
 const axios = require('axios');
-const { response } = require('express');
+// const { response } = require('express');
 
 
 const randomActionAPI = (req, res, next) =>{
@@ -9,8 +9,11 @@ const randomActionAPI = (req, res, next) =>{
 })
 .then(response =>{
     // res.send(response)
-    console.log(response,'ini middle ware');
-    res.status(200).json({message : response})
+    // console.log(response,'ini middle ware');
+    // res.status(200).json({message : response.data})
+    req.action = {
+        message : response.data
+    }
     next()
 })  
 .catch(err =>{

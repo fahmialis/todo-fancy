@@ -9,8 +9,8 @@ const randomActionAPI = require('../middleware/randomActionAPI')
 
 router.use(Authenticate)
 
-router.post('/',randomActionAPI, ToDoController.add)
-router.get('/', ToDoController.read)
+router.post('/', ToDoController.add)
+router.get('/',randomActionAPI,ToDoController.read)
 
 router.use('/:id',Authorize)
 
