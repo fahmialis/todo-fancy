@@ -8,7 +8,7 @@ class ToDoController {
             title : req.body.title,
             description : req.body.description,
             due_date : req.body.due_date,
-            UserId : req.body.UserId
+            UserId : +req.currentUser.id
         }
 
         ToDo.create(data)
@@ -37,8 +37,13 @@ class ToDoController {
     }
 
     static read(req, res, next){
+        // console.log(req.currentUser,' ini read');
         // res.send('get data')
-        ToDo.findAll()
+        ToDo.findAll({
+            where : {
+                UserId : +req.currentUser.id
+            }
+        })
         .then(data =>{
             res.status(200).json({message : `task found is`, data})
         })
@@ -69,7 +74,7 @@ class ToDoController {
             }
         })
         .catch(err =>{
-            // console.log(err);
+            console.log(err);
             next({
                 code: 500,
                 message:`Internal Server Error`

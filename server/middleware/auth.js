@@ -28,8 +28,8 @@ const Authenticate = (req, res, next) =>{
 }
 
 const Authorize = (req, res, next) =>{
-    // console.log(req.currentUser, 'ini curretn user');
-    // console.log(req.params, 'ini params');
+    console.log(req.currentUser, 'ini curretn user');
+    console.log(req.params, 'ini params');
     let Id = +req.params.id 
     let userId = req.currentUser.id
     // console.log(`masuk authorize`);
@@ -60,8 +60,6 @@ const Authorize = (req, res, next) =>{
             message:"Internal Server Error"
         })
     })
-    
-
 }
 
 

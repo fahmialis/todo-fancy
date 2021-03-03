@@ -3,11 +3,13 @@ const router = express.Router()
 const ToDoController = require('../controllers/toDoController')
 
 const{Authenticate, Authorize} = require('../middleware/auth')
+const randomActionAPI = require('../middleware/randomActionAPI')
+
 
 
 router.use(Authenticate)
 
-router.post('/', ToDoController.add)
+router.post('/',randomActionAPI, ToDoController.add)
 router.get('/', ToDoController.read)
 
 router.use('/:id',Authorize)
