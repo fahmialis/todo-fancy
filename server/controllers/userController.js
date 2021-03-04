@@ -12,7 +12,7 @@ class UserController {
 
         User.create(data)
         .then(user =>{
-            res.status(201).json({success: true, message : 'user created', user}, )
+            res.status(201).json({success: true, message : 'user created', id : user.id, email: user.email}, )
         })
         .catch(err =>{
             // console.log(err)
@@ -49,7 +49,7 @@ class UserController {
                         email : user.email
                     })
 
-                    res.status(200).json({access_token})
+                    res.status(200).json({access_token,id : user.id, email: user.email})
                 } else {
                     next({
                         code: 401,

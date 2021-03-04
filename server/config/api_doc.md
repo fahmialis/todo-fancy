@@ -3,6 +3,15 @@ My To-Do App is an application to manage your To-Do. It performs standard CRUD a
 
 This app has : 
 * RESTful endpoint for To-Do App's CRUD operation
+## GET /
+## POST /user/register
+## POST /user/login
+## POST /todos
+## GET /todos
+## GET /todos/:id
+## PUT /todos/:id
+## PATCH /todos/:id
+## DELETE /todos/:id
 * JSON formatted response
 
 &nbsp;
@@ -42,70 +51,83 @@ _Response (500 - Server error)_
 
 ## RESTful endpoints
 
-### GET /todos
+### user
 
-> Get all assets
 
+### POST /user/register
+
+> Registering new account
+
+_Request Body_
 ```
 {
-  "Content-type": "application/json"
+    {
+      "email" : "asdf@mail.com",
+      "password" : "asdf1234",
+    },
 }
 ```
 
-_Response (200)_
+_Response (201 - Created)_
 ```
 [
   {
     "id": 1,
-    "title": "Learn REST API",
-    "description": "learn how to create RESTful API with express and sequelize",
-    "due date": "2021-03-02",
+    "email" : "asdf@mail.com",
+    "password" : "asdf1234",
     "createdAt": "2020-03-20T07:15:12.149Z",
     "updatedAt": "2020-03-20T07:15:12.149Z",
   },
-  {
-    "id": 2,
-    "name": "makan siang",
-    "description": "makan siang",
-    "due date": "2021-03-02",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  }
 ]
 ```
 
----
-### GET /todos/:id
-
-> Get single asset as defined by the id provided
-
-_Request Header_
-```
+_Response (500 - Server error)_
 ```
 {
-  "Content-type": "application/json"
+  "message": "Internal server error"
 }
 ```
-```
+
+### POST /user/login
+
+> Login into existing account
 
 _Request Body_
 ```
-not needed
-```
-
-_Response (200)_
-```
 {
-    "id": 1,
-    "title": "Learn REST API",
-    "description": "learn how to create RESTful API with express and sequelize",
-    "due date": "2021-03-02",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
+    {
+      "email" : "asdf@mail.com",
+      "password" : "asdf1234",
+    },
 }
 ```
 
----
+_Response (200 - OK)_
+```
+[
+  {
+    "id": 1,
+    "email" : "asdf@mail.com",
+  },
+]
+```
+
+_Response (401 - Unauthorized)_
+```
+{
+  "message": "You are not allowed to access this part"
+}
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
+### todos
+
 ### POST /todos
 
 > Create new asset
@@ -159,6 +181,101 @@ _Response (201 - Created)_
 ]
 ```
 
+_Response (400 - Server error)_
+```
+{
+  "message": "Cannot have empty field"
+}
+```
+
+### GET /todos
+
+> Get all assets
+
+```
+{
+  "Content-type": "application/json"
+}
+```
+
+_Response (200)_
+```
+[
+  {
+    "id": 1,
+    "title": "Learn REST API",
+    "description": "learn how to create RESTful API with express and sequelize",
+    "due date": "2021-03-02",
+    "createdAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z",
+  },
+  {
+    "id": 2,
+    "name": "makan siang",
+    "description": "makan siang",
+    "due date": "2021-03-02",
+    "createdAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z",
+  }
+]
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
+---
+### GET /todos/:id
+
+> Get single asset as defined by the id provided
+
+_Request Header_
+```
+```
+{
+  "Content-type": "application/json"
+}
+```
+```
+
+_Request Body_
+```
+not needed
+```
+
+_Response (200)_
+```
+{
+    "id": 1,
+    "title": "Learn REST API",
+    "description": "learn how to create RESTful API with express and sequelize",
+    "due date": "2021-03-02",
+    "createdAt": "2020-03-20T07:15:12.149Z",
+    "updatedAt": "2020-03-20T07:15:12.149Z",
+}
+```
+
+_Response (404 - Not Found)_
+```
+{
+  "message": "Data not found"
+}
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
+
+---
+
+
 ---
 ### PUT /todos/:id
 
@@ -187,6 +304,20 @@ _Response (200 - OK)_
 }
 ```
 
+_Response (404 - Not Found)_
+```
+{
+  "message": "Data not found"
+}
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
 ### PATCH /todos/:id
 
 > Update an asset defined by the id provided
@@ -212,6 +343,20 @@ _Response (200 - OK)_
 }
 ```
 
+_Response (404 - Not Found)_
+```
+{
+  "message": "Data not found"
+}
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
 ---
 ### DELETE /todos/:id
 
@@ -231,53 +376,17 @@ _Response (200 - OK) - Alternative 2_
 }
 ```
 
-### POST /user/register
-
-> Create new asset
-
-_Request Body_
+_Response (404 - Not Found)_
 ```
 {
-    {
-      "email" : "asdf@mail.com",
-      "password" : "asdf1234",
-    },
+  "message": "Data not found"
 }
 ```
 
-_Response (201 - Created)_
-```
-[
-  {
-    "id": 1,
-    "email" : "asdf@mail.com",
-    "password" : "asdf1234",
-    "createdAt": "2020-03-20T07:15:12.149Z",
-    "updatedAt": "2020-03-20T07:15:12.149Z",
-  },
-]
-```
-
-### POST /user/login
-
-> Create new asset
-
-_Request Body_
+_Response (500 - Server error)_
 ```
 {
-    {
-      "email" : "asdf@mail.com",
-      "password" : "asdf1234",
-    },
+  "message": "Internal server error"
 }
 ```
 
-_Response (201 - OK)_
-```
-[
-  {
-    "id": 1,
-    "email" : "asdf@mail.com",
-  },
-]
-```
