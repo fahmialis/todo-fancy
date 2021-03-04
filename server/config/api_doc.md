@@ -40,6 +40,13 @@ _Response (401 - Unauthorized)_
 }
 ```
 
+_Response (404 - Data not found)_
+```
+{
+  "message": "Data not found"
+}
+```
+
 _Response (500 - Server error)_
 ```
 {
@@ -181,10 +188,10 @@ _Response (201 - Created)_
 ]
 ```
 
-_Response (400 - Server error)_
+_Response (400 - Bad Request)_
 ```
 {
-  "message": "Cannot have empty field"
+  "message": "Invalid data"
 }
 ```
 
