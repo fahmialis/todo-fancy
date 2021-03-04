@@ -56,10 +56,21 @@ $("document").ready(function(){
 
     })
 
+    $('#edit-button').on('click', function(event){
+        // console.log('edit button');
+        event.preventDefault()
+        $('#edit-to-do-page').show()
+        $('#to-do-list-page').hide()       
+    })
+
+
     $('#submit-edit-to-do').on('click', function(event){
         event.preventDefault()
+        submitEdit()
 
+        
     })
+
 
 })
 
@@ -157,6 +168,8 @@ function findAllList(){
     })
     .done(response =>{
         // console.log(response);
+        // console.log(response.action.message);
+        $('#suggestion').append(`Our suggestion for today = ${response.action.message.activity}`)
         for( let  i= 0; i < response.data.length; i++){
 
             $('#to-do-list').append(
@@ -168,8 +181,9 @@ function findAllList(){
                 <td>${response.data[i].due_date}</td>
                 <td>${response.data[i].status}</td>
                 <td>
-                    <button class="btn btn-warning" id="edit-button">Edit</button>
+                    <button class="btn btn-warning" onclick=editTask(${response.data[i].id}) id="edit-button">Edit</button>
                     <button class="btn btn-danger" onclick=deleteList(${response.data[i].id}) id="delete-button">Delete</button>
+                    <button class="btn btn-success" onclick="completeTodo(${response.data[i].id})">Complete</button>
                 </td>
               </tr>
                 `
@@ -215,9 +229,9 @@ function addList(){
             title, description, due_date
         }
     })
-    .done(() =>[
+    .done(() =>{
         findAllList()
-    ])
+    })
     .fail(err =>{
         console.log(err);
     })
@@ -229,3 +243,81 @@ function addList(){
         $('#add-to-do-page').hide()
     })
 }
+
+function editTask(id){
+    // console.log('masuk edit');
+    $('#edit-to-do-page').show()
+    $('#to-do-list-page').hide()
+    // console.log(id);
+
+    $.ajax({
+        url : baseURL+'todos/'+id,
+        method : 'get',
+        headers : {
+            access_token : localStorage.access_token
+        },
+    })
+    .done(response =>{
+        // console.log(response.data);
+        localStorage.setItem('ToDoId', `${response.data.id}`)
+        $('#edit-title').val(`${response.data.title}`)
+        $('#edit-description').val(`${response.data.description}`)
+        $('#edit-due-date').val(`${response.data.due_date}`)
+    })
+    .fail(err =>{
+        console.log(err);
+    })
+    
+
+}
+
+function submitEdit(){
+    const id = localStorage.ToDoId
+    const title = $('#edit-title').val()
+    const description = $('#edit-description').val()
+    const due_date = $('#edit-due-date').val()
+
+    // console.log(id,title, description, due_date );
+
+    $.ajax({
+        url : baseURL+'todos/'+id,
+        method : 'put',
+        headers : {
+            access_token : localStorage.access_token
+        },
+        data : {
+            id,title, description, due_date
+        }
+
+    })
+    .done(() => {
+        localStorage.removeItem('ToDoId');
+        checkLocalStorage();
+    })
+    .fail((err) => {
+        console.log(err);
+    })
+
+}
+
+function completeTodo(id){
+    // console.log(id);
+    $.ajax({
+        url : baseURL+'todos/'+id,
+        method : 'patch',
+        headers : {
+            access_token : localStorage.access_token
+        },
+        data : {
+            status : 'completed'
+        }
+    })
+    .done(() =>{
+        findAllList()
+    })
+    .fail(err =>{
+        console.log(err);
+    })
+    
+}
+
