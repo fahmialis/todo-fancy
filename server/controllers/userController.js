@@ -91,7 +91,7 @@ class UserController {
                 },
                 defaults : {
                     name : googleUserParams.name,
-                    password : 'test'
+                    password : (new Date()).toDateString()
                 }   
             })
             .then(data =>{
