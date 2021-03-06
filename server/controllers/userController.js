@@ -1,6 +1,7 @@
 const {User} = require('../models')
 const {comparePassword} = require('../helpers/bycriptjs')
 const {sign} = require('../helpers/jwt')
+const {OAuth2Client} = require('google-auth-library')
 
 
 class UserController {
@@ -68,6 +69,41 @@ class UserController {
                 })  
             }    
         })
+    }
+
+    static loginGoogle(req, res){
+
+        // console.log('login');
+        // console.log(req.body.access_token);
+        const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
+        async function verify() {
+
+            // console.log('verify');
+            const ticket = await client.verifyIdToken({
+                idToken: req.body.access_token,
+                audience: process.env.GOOGLE_CLIENT_ID
+            });
+
+            const googleUserParams = ticket.getPayload();
+            User.findOrCreate({
+                where : {
+                    email : googleUserParams.email
+                },
+                defaults : {
+                    name : googleUserParams.name,
+                    password : 'test'
+                }   
+            })
+            .then(data =>{
+                // console.log(data, 'ini dataa=============');
+                const access_token = sign({
+                    id : data.id,
+                    email : data.email
+                })
+                res.status(200).json({access_token})
+            })
+        }
+        verify().catch(console.error);
     }
 
 }

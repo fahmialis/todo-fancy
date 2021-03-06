@@ -81,7 +81,6 @@ _Response (201 - Created)_
   {
     "id": 1,
     "email" : "asdf@mail.com",
-    "password" : "asdf1234",
     "createdAt": "2020-03-20T07:15:12.149Z",
     "updatedAt": "2020-03-20T07:15:12.149Z",
   },
@@ -108,6 +107,36 @@ _Request Body_
     },
 }
 ```
+
+_Response (200 - OK)_
+```
+[
+  {
+    "id": 1,
+    "email" : "asdf@mail.com",
+  },
+]
+```
+
+_Response (401 - Unauthorized)_
+```
+{
+  "message": "You are not allowed to access this part"
+}
+```
+
+_Response (500 - Server error)_
+```
+{
+  "message": "Internal server error"
+}
+```
+
+### POST /user/loginGoogle
+
+> Login into existing account
+
+_Request Body_
 
 _Response (200 - OK)_
 ```
