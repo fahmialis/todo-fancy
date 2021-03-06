@@ -29,7 +29,7 @@ $("document").ready(function(){
 
     $('#logout-button').on('click', function(event){
         event.preventDefault()
-        logout();    
+        signOut()    
     })
 
     $('#submit-login').on('click', function(event){
@@ -114,6 +114,8 @@ function register(){
     })
     .done(response =>{
         console.log(response);
+        $('#login-page').show()
+        $('#register-page').hide()
     })
     .fail(err =>{
         console.log(err);
@@ -152,10 +154,7 @@ function checkLocalStorage(){
     }
 }
 
-function logout(){
-    localStorage.removeItem('access_token')
-    checkLocalStorage()
-}
+
 
 function findAllList(){
     $('#to-do-list').empty()
@@ -169,13 +168,13 @@ function findAllList(){
     .done(response =>{
         // console.log(response);
         // console.log(response.action.message);
+        $('#suggestion').empty()
         $('#suggestion').append(`Our suggestion for today = ${response.action.message.activity}`)
         for( let  i= 0; i < response.data.length; i++){
 
             $('#to-do-list').append(
                 `
                 <tr>
-                <th scope="row">${response.data[i].id}</th>
                 <td>${response.data[i].title}</td>
                 <td>${response.data[i].description}</td>
                 <td>${response.data[i].due_date}</td>
@@ -262,7 +261,6 @@ function editTask(id){
         localStorage.setItem('ToDoId', `${response.data.id}`)
         $('#edit-title').val(`${response.data.title}`)
         $('#edit-description').val(`${response.data.description}`)
-        $('#edit-due-date').val(`${response.data.due_date}`)
     })
     .fail(err =>{
         console.log(err);
@@ -276,6 +274,7 @@ function submitEdit(){
     const title = $('#edit-title').val()
     const description = $('#edit-description').val()
     const due_date = $('#edit-due-date').val()
+    // console.log(due_date);
 
     // console.log(id,title, description, due_date );
 
@@ -319,5 +318,39 @@ function completeTodo(id){
         console.log(err);
     })
     
+}
+
+function onSignIn(googleUser) {
+
+    $.ajax({
+        method : 'post',
+        url : baseURL+'user/loginGoogle',
+        data : {
+            access_token : googleUser.getAuthResponse().id_token
+        }
+    })
+    .done(response =>{
+        // console.log(response);
+        localStorage.setItem('access_token', response.access_token)
+        checkLocalStorage()
+    })
+    .fail(err =>{
+        console.log(err);
+    })
+    .always(() =>{
+        $('#login-email').val('')
+        $('#login-password').val('')
+    })
+}
+
+
+
+function signOut() {
+    var auth2 = gapi.auth2.getAuthInstance();
+    auth2.signOut().then(function () {
+    console.log('User signed out.');
+    });
+    localStorage.removeItem('access_token')
+    checkLocalStorage()
 }
 

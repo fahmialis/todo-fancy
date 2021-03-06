@@ -77,7 +77,6 @@ class UserController {
         // console.log(req.body.access_token);
         const client = new OAuth2Client(process.env.GOOGLE_CLIENT_ID);
         async function verify() {
-
             // console.log('verify');
             const ticket = await client.verifyIdToken({
                 idToken: req.body.access_token,
@@ -101,6 +100,9 @@ class UserController {
                     email : data.email
                 })
                 res.status(200).json({access_token})
+            })
+            .catch(err =>{
+                console.log(err);
             })
         }
         verify().catch(console.error);
